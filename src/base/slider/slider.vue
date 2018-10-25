@@ -78,6 +78,7 @@ export default {
       this._play()
     }
   },
+  // 性能优化
   deactivated() {
     this.slider.disable()
     clearTimeout(this.timer)
@@ -105,8 +106,9 @@ export default {
         child.style.width = sliderWidth + 'px'
         width += sliderWidth
       }
-      // 至少两个，以保证切换
+
       if (this.loop && !isResize) {
+      // 至少两个，以保证切换
         width += 2 * sliderWidth
       }
       this.$refs.sliderGroup.style.width = width + 'px'
@@ -123,6 +125,7 @@ export default {
         }
       })
 
+      // 手动滚动下一页
       this.slider.on('scrollEnd', this._onScrollEnd)
 
       this.slider.on('touchend', () => {
