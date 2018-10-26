@@ -1,6 +1,10 @@
 <template>
-  <div>
-    singer
+  <div class="singer"
+    ref="singer">
+    <list-view @select="selectSinger"
+      :data="singers"
+      ref="list"></list-view>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -8,12 +12,16 @@
 import { getSingerList } from 'api/singer'
 import { ERR_OK } from 'api/config'
 import Singer from 'common/js/singer'
+import ListView from 'base/listview/listview'
 
 const HOT_SINGER_LEN = 10
 const HOT_NAME = '热门'
 
 export default {
   name: 'Singer',
+  components: {
+    ListView
+  },
   data() {
     return {
       singers: []
@@ -23,23 +31,31 @@ export default {
     this._getSingerList()
   },
   methods: {
+    selectSinger(singer) {
+      this.$router.push({
+        path: `/singer/${singer.id}`
+      })
+      this.setSinger(singer)
+    },
     _getSingerList() {
       getSingerList().then(res => {
         if (res.code === ERR_OK) {
-          this._normalizeSinger(res.data.list)
+          this.singers = this._normalizeSinger(res.data.list)
         }
       })
     },
     _normalizeSinger(list) {
       let map = {
-        title: HOT_NAME,
-        items: []
+        hot: {
+          title: HOT_NAME,
+          items: []
+        }
       }
       // 构建以字母为key的数据
       list.forEach((item, index) => {
         // 热门，默认取前十个
         if (index < HOT_SINGER_LEN) {
-          map.items.push(
+          map.hot.items.push(
             new Singer({
               name: item.Fsinger_name,
               id: item.Fsinger_mid
@@ -82,4 +98,10 @@ export default {
 </script>
 
 <style scope lang="stylus">
+.singer {
+  position: fixed;
+  top: 88px;
+  bottom: 0;
+  width: 100%;
+}
 </style>
