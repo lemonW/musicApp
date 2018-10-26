@@ -32,7 +32,7 @@
           :key="index"
           :data-index="index"
           class="item"
-          :class="{'current':currentIndex===index}">{{item}}
+          :class="{'current':currentIndex === index}">{{item}}
         </li>
       </ul>
     </div>
@@ -54,6 +54,7 @@ import Loading from 'base/loading/loading'
 import { getData } from 'common/js/dom'
 
 const TITLE_HEIGHT = 30
+// 单个索引的元素高度
 const ANCHOR_HEIGHT = 18
 
 export default {
@@ -72,6 +73,7 @@ export default {
     },
     // 固定的标题
     fixedTitle() {
+      // 在顶部
       if (this.scrollY > 0) {
         return ''
       }
@@ -91,6 +93,7 @@ export default {
     this.probeType = 3
     // 监听滚动
     this.listenScroll = true
+    // 记录touch事件需公用的数据
     this.touch = {}
     this.listHeight = []
   },
@@ -102,6 +105,7 @@ export default {
       let anchorIndex = getData(e.target, 'index')
       let firstTouch = e.touches[0]
       this.touch.y1 = firstTouch.pageY
+      // 开始触摸时的index
       this.touch.anchorIndex = anchorIndex
 
       this._scrollTo(anchorIndex)
@@ -110,6 +114,7 @@ export default {
       // 计算移动到哪个索引
       let firstTouch = e.touches[0]
       this.touch.y2 = firstTouch.pageY
+      // 位运算取整
       let delta = ((this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT) | 0
       let anchorIndex = parseInt(this.touch.anchorIndex) + delta
 
@@ -119,9 +124,11 @@ export default {
       this.$refs.listview.refresh()
     },
     scroll(pos) {
+      // 实时获取的滚动高度
       this.scrollY = pos.y
     },
     _calculateHeight() {
+      // 每个listGroup的高度
       this.listHeight = []
       const list = this.$refs.listGroup
       let height = 0
@@ -141,6 +148,8 @@ export default {
       } else if (index > this.listHeight.length - 2) {
         index = this.listHeight.length - 2
       }
+      // ref用在子组件上，引用就指向组件实例;在普通的 DOM 元素上使用，引用指向的就是 DOM 元素
+      // 调用scroll组件的方法
       this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
       this.scrollY = this.$refs.listview.scroll.y
     }
@@ -151,6 +160,7 @@ export default {
         this._calculateHeight()
       }, 20)
     },
+    // 与索引联动
     scrollY(newY) {
       const listHeight = this.listHeight
       // 当滚动到顶部，newY>0
@@ -163,7 +173,9 @@ export default {
         let height1 = listHeight[i]
         let height2 = listHeight[i + 1]
         if (-newY >= height1 && -newY < height2) {
+          // 重新设置index
           this.currentIndex = i
+          // 距离tab的高度
           this.diff = height2 + newY
           return
         }
@@ -174,6 +186,7 @@ export default {
     diff(newVal) {
       let fixedTop =
         newVal > 0 && newVal < TITLE_HEIGHT ? newVal - TITLE_HEIGHT : 0
+      // 不满足条件时，fixedTop始终为0
       if (this.fixedTop === fixedTop) {
         return
       }

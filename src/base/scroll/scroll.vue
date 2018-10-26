@@ -12,6 +12,7 @@ const DIRECTION_V = 'vertical'
 
 export default {
   props: {
+    // 选择何时派发scroll事件：http://ustbhuangyi.github.io/better-scroll/doc/options.html#probetype
     probeType: {
       type: Number,
       default: 1
@@ -20,6 +21,7 @@ export default {
       type: Boolean,
       default: true
     },
+    // 是否监听scroll
     listenScroll: {
       type: Boolean,
       default: false
@@ -63,6 +65,7 @@ export default {
       })
 
       if (this.listenScroll) {
+        // 参数：{Object} {x, y} 滚动的实时坐标
         this.scroll.on('scroll', pos => {
           this.$emit('scroll', pos)
         })
