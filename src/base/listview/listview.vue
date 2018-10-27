@@ -2,19 +2,19 @@
   <scroll @scroll="scroll"
     :listen-scroll="listenScroll"
     :probe-type="probeType"
-    :data="data"
+    :data="singersData"
     class="listview"
     ref="listview">
     <ul>
-      <li v-for="(group, index) in data"
+      <li v-for="(group, index) in singersData"
         :key="index"
         class="list-group"
         ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <uL>
-          <li @click="selectItem(item)"
-            v-for="(item, index) in group.items"
+          <li v-for="(item, index) in group.items"
             :key="index"
+            @click="selectItem(item)"
             class="list-group-item">
             <img class="avatar"
               v-lazy="item.avatar">
@@ -41,7 +41,7 @@
       v-show="fixedTitle">
       <div class="fixed-title">{{fixedTitle}} </div>
     </div>
-    <div v-show="!data.length"
+    <div v-show="!singersData.length"
       class="loading-container">
       <loading></loading>
     </div>
@@ -59,15 +59,15 @@ const ANCHOR_HEIGHT = 18
 
 export default {
   props: {
-    data: {
+    singersData: {
       type: Array,
-      default: []
+      default: () => []
     }
   },
   computed: {
     // 索引数组
     shortcutList() {
-      return this.data.map(group => {
+      return this.singersData.map(group => {
         return group.title.substr(0, 1)
       })
     },
@@ -77,8 +77,8 @@ export default {
       if (this.scrollY > 0) {
         return ''
       }
-      return this.data[this.currentIndex]
-        ? this.data[this.currentIndex].title
+      return this.singersData[this.currentIndex]
+        ? this.singersData[this.currentIndex].title
         : ''
     }
   },
@@ -155,7 +155,7 @@ export default {
     }
   },
   watch: {
-    data() {
+    singersData() {
       setTimeout(() => {
         this._calculateHeight()
       }, 20)
