@@ -23,6 +23,7 @@
           <ul>
             <li v-for="(item, index) in discList"
               :key="index"
+              @click="selectItem(item)"
               class="item">
               <div class="icon">
                 <img width="60"
@@ -44,6 +45,7 @@
         <loading></loading>
       </div>
     </scroll>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -53,6 +55,7 @@ import Slider from 'base/slider/slider'
 import Scroll from 'base/scroll/scroll'
 import { getRecommend, getDiscList } from 'api/recommend'
 import { ERR_OK } from 'api/config'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'Recommend',
@@ -72,6 +75,12 @@ export default {
     this._getDiscList()
   },
   methods: {
+    selectItem(item) {
+      this.$router.push({
+        path: `/recommend/${item.dissid}`
+      })
+      this.setDisc(item)
+    },
     _getRecommend() {
       getRecommend().then(res => {
         if (res.code === ERR_OK) {
@@ -93,7 +102,10 @@ export default {
           this.$refs.scroll.refresh()
         }, 20)
       }
-    }
+    },
+    ...mapMutations({
+      setDisc: 'SET_DISC'
+    })
   }
 }
 </script>
