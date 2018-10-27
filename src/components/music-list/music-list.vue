@@ -21,6 +21,7 @@
       <div class="filter"
         ref="filter"></div>
     </div>
+    <!-- 滚动用的遮罩 -->
     <div class="bg-layer"
       ref="layer"></div>
     <scroll :data="songs"
@@ -124,6 +125,7 @@ export default {
       let scale = 1
       let zIndex = 0
       let blur = 0
+      // 控制下拉时背景图的缩放
       const percent = Math.abs(newVal / this.imageHeight)
       if (newVal > 0) {
         scale = 1 + percent
@@ -133,13 +135,16 @@ export default {
       }
 
       this.$refs.layer.style[transform] = `translate3d(0,${translateY}px,0)`
+      // 高斯模糊，iOS
       this.$refs.filter.style[backdrop] = `blur(${blur}px)`
       if (newVal < this.minTransalteY) {
+        // song-list滚到顶部
         zIndex = 10
         this.$refs.bgImage.style.paddingTop = 0
         this.$refs.bgImage.style.height = `${RESERVED_HEIGHT}px`
         this.$refs.playBtn.style.display = 'none'
       } else {
+        // 默认的
         this.$refs.bgImage.style.paddingTop = '70%'
         this.$refs.bgImage.style.height = 0
         this.$refs.playBtn.style.display = ''
