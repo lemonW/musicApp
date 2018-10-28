@@ -21,6 +21,7 @@ export function search(query, page, zhida, perpage) {
     p: page,
     perpage,
     n: perpage,
+    // 是否检索歌手
     catZhida: zhida ? 1 : 0,
     zhidaqu: 1,
     t: 0,
