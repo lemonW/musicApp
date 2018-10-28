@@ -1,7 +1,10 @@
+import { loadSearch } from 'common/js/cache'
+
 const state = {
   singer: {},
   disc: {},
-  topList: {}
+  topList: {},
+  searchHistory: loadSearch()
 }
 
 export default state

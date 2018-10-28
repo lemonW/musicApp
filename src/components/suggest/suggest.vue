@@ -24,12 +24,13 @@
     </ul>
     <div v-show="!hasMore && !result.length"
       class="no-result-wrapper">
+      <!-- 固定值，无需v-bind -->
       <no-result title="抱歉，暂无搜索结果"></no-result>
     </div>
   </scroll>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
 import NoResult from 'base/no-result/no-result'
@@ -39,6 +40,7 @@ import { createSong, isValidMusic, processSongsUrl } from 'common/js/song'
 import { mapMutations, mapActions } from 'vuex'
 import Singer from 'common/js/singer'
 
+// 区分是歌手还是歌曲
 const TYPE_SINGER = 'singer'
 const perpage = 20
 
@@ -102,12 +104,15 @@ export default {
           id: item.singermid,
           name: item.singername
         })
+        // 进入歌手详情
         this.$router.push({
           path: `/search/${singer.id}`
         })
         this.setSinger(singer)
       } else {
-        this.insertSong(item)
+        // 将歌曲插入歌单并播放
+
+        // this.insertSong(item)
       }
       this.$emit('select', item)
     },
@@ -176,7 +181,7 @@ export default {
 }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus">
 @import '~common/stylus/variable';
 @import '~common/stylus/mixin';
 

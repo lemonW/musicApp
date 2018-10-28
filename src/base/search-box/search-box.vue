@@ -12,6 +12,7 @@
 </template>
 
 <script>
+// 函数节流
 import { debounce } from 'common/js/util'
 
 export default {

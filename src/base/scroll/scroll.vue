@@ -30,6 +30,7 @@ export default {
       type: Array,
       default: null
     },
+    // 上拉刷新
     pullup: {
       type: Boolean,
       default: false
@@ -73,6 +74,7 @@ export default {
 
       if (this.pullup) {
         this.scroll.on('scrollEnd', () => {
+          // 到底部
           if (this.scroll.y <= this.scroll.maxScrollY + 50) {
             this.$emit('scrollToEnd')
           }

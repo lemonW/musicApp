@@ -14,7 +14,8 @@ export function getHotKey() {
 }
 
 export function search(query, page, zhida, perpage) {
-  const url = 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
+  // const url = 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
+  const url = 'http://ustbhuangyi.com/music/api/search'
 
   const data = Object.assign({}, commonParams, {
     w: query,
